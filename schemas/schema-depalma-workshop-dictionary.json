@@ -1,0 +1,276 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pontuskarlsson/schemas/main/schema-meta.json",
+  "$id": "https://raw.githubusercontent.com/pontuskarlsson/depalmaworkshop/main/schemas/schema-depalma-workshop-dictionary.json",
+  "title": "DePalma Workshop - Schema for Dictionary Item",
+  "description": "Schema for dictionary items (words, terms, and comparisons)",
+  "attribution": {
+    "maintainers": [
+      {
+        "name": "Pontus Karlsson",
+        "role": "lead maintainer",
+        "profile": "https://github.com/pontuskarlsson",
+        "repo": "pontuskarlsson/depalmaworkshop"
+      }
+    ],
+    "organization": {
+      "name": "DePalma Workshop",
+      "profile": "https://github.com/depalmaworkshop"
+    }
+  },
+  "version": {
+    "schemaVersion": "1.0.0",
+    "lastUpdated": "2025-01-14",
+    "status": {
+      "state": "draft",
+      "details": "Initial draft of dictionary schema",
+      "since": "2025-01-14"
+    },
+    "compatibility": {
+      "minimum": "1.0.0",
+      "maximum": "1.9.9",
+      "excluded": []
+    }
+  },
+  "license": {
+    "name": "Creative Commons Attribution-ShareAlike 4.0 International",
+    "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "attributionText": "A community effort initiated by DePalma Workshop and licensed under CC BY-SA 4.0",
+    "attributionUrl": "https://github.com/pontuskarlsson/depalmaworkshop",
+    "notes": "This schema represents a collaborative effort between DePalma Workshop and its community. While the schema itself is maintained by DePalma Workshop, the individual dictionary items are created and maintained by various contributors. Each dictionary item includes its own attribution details. All contributions must be licensed under CC BY-SA 4.0 to ensure the knowledge remains open and accessible."
+  },
+  "type": "object",
+  "required": ["name", "type", "classes"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The dictionary item name in singular form"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["word", "term", "comparison"],
+      "description": "Whether this is a single word, term, or comparison"
+    },
+    "targetRole": {
+      "type": "array",
+      "description": "Target roles this content is intended for",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "classes": {
+      "type": "array",
+      "description": "The grammatical classes this item belongs to",
+      "items": {
+        "type": "object",
+        "required": ["type", "definitions"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["noun", "verb", "adjective", "adverb", "preposition", "conjunction"],
+            "description": "The grammatical class"
+          },
+          "definitions": {
+            "type": "array",
+            "description": "One or more definitions for this item in this class",
+            "items": {
+              "type": "object",
+              "required": ["text"],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "description": "The definition text"
+                }
+              }
+            }
+          },
+          "forms": {
+            "type": "object",
+            "description": "Different forms of the word based on its class",
+            "properties": {
+              "plural": {
+                "type": "string",
+                "description": "Plural form for nouns"
+              },
+              "infinitive": {
+                "type": "string",
+                "description": "Infinitive form for verbs"
+              },
+              "present": {
+                "type": "object",
+                "properties": {
+                  "singular": {
+                    "type": "string",
+                    "description": "Singular present form"
+                  },
+                  "plural": {
+                    "type": "string",
+                    "description": "Plural present form"
+                  }
+                }
+              },
+              "present_participle": {
+                "type": "string",
+                "description": "Present participle form for verbs"
+              },
+              "past": {
+                "type": "string",
+                "description": "Past form for verbs"
+              },
+              "past_participle": {
+                "type": "string",
+                "description": "Past participle form for verbs"
+              },
+              "comparative": {
+                "type": "string",
+                "description": "Comparative form for adjectives"
+              },
+              "superlative": {
+                "type": "string",
+                "description": "Superlative form for adjectives"
+              }
+            }
+          }
+        }
+      }
+    },
+    "notToBeConfusedWith": {
+      "type": "array",
+      "description": "Related terms that should be distinguished from this one",
+      "items": {
+        "type": "string"
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "description": "Comparison details (only for entries of type 'comparison')",
+      "required": ["description", "detailed_comparison"],
+      "properties": {
+        "description": {
+          "type": "array",
+          "description": "General descriptions of the differences",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "detailed_comparison": {
+          "type": "array",
+          "description": "Detailed point-by-point comparisons",
+          "items": {
+            "type": "object",
+            "required": ["aspect", "term_a", "term_b"],
+            "properties": {
+              "aspect": {
+                "type": "string",
+                "description": "The aspect being compared"
+              },
+              "term_a": {
+                "type": "string",
+                "description": "Description for first term"
+              },
+              "term_b": {
+                "type": "string",
+                "description": "Description for second term"
+              }
+            }
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "description": "Relationships to other items within the dictionary",
+      "properties": {
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Alternative names for this item (in singular form)"
+        },
+        "acronym": {
+          "type": "string",
+          "description": "The acronym form of the term"
+        },
+        "expanded_form": {
+          "type": "string",
+          "description": "The expanded form if this item is an acronym"
+        },
+        "related_terms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Related terms within the dictionary (in singular form)"
+        },
+        "related_forms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["word", "type", "relationship"],
+            "properties": {
+              "word": {
+                "type": "string",
+                "description": "The related word"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["noun_form", "adjective_form", "verb_form", "adverb_form"],
+                "description": "The type of relationship"
+              },
+              "relationship": {
+                "type": "string",
+                "description": "Description of the relationship"
+              }
+            }
+          }
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "description": "Links to internal content within DePalma Workshop",
+      "items": {
+        "type": "object",
+        "required": ["type", "url", "description"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of content (e.g., guide, article, tutorial)"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL to the internal content"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the linked content"
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "Internal and external references",
+      "items": {
+        "type": "object",
+        "required": ["name", "url", "description"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the source"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL to the source"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the source"
+          }
+        }
+      }
+    }
+  }
+}
