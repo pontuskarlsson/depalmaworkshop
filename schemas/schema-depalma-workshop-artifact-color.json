@@ -1,0 +1,306 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pontuskarlsson/schemas/main/schema-meta.json",
+  "$id": "https://raw.githubusercontent.com/pontuskarlsson/depalmaworkshop/main/schemas/schema-depalma-workshop-artifact-color.json",
+  "title": "DePalma Workshop - Schema for Color Artifact",
+  "description": "Schema for color artifacts and their references",
+  
+  "attribution": {
+    "maintainers": [
+      {
+        "name": "Pontus Karlsson",
+        "role": "lead maintainer",
+        "profile": "https://github.com/pontuskarlsson",
+        "repo": "pontuskarlsson/depalmaworkshop"
+      }
+    ],
+    "organization": {
+      "name": "DePalma Workshop",
+      "profile": "https://github.com/depalmaworkshop"
+    }
+  },
+
+  "version": {
+    "schemaVersion": "1.0.0",
+    "lastUpdated": "2025-01-31",
+    "status": {
+      "state": "draft",
+      "details": "Initial draft of color artifact schema",
+      "since": "2025-01-31",
+      "compatibility": {
+        "minimum": "1.0.0",
+        "maximum": "1.9.9",
+        "excluded": []
+      }
+    }
+  },
+
+  "license": {
+    "name": "Creative Commons Attribution-ShareAlike 4.0 International",
+    "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "attributionText": "A community effort initiated by DePalma Workshop and licensed under CC BY-SA 4.0",
+    "attributionUrl": "https://github.com/pontuskarlsson/depalmaworkshop",
+    "notes": "This schema represents a collaborative effort between DePalma Workshop and its community. While the schema itself is maintained by DePalma Workshop, the individual color artifacts are created and maintained by various contributors. Each color artifact includes its own attribution details. All contributions must be licensed under CC BY-SA 4.0 to ensure the knowledge remains open and accessible."
+  },
+
+  "type": "object",
+
+  "required": [
+    "colorName",
+    "colorType",
+    "colorCode",
+    "references"
+  ],
+
+  "properties": {
+    "colorName": {
+      "type": "string",
+      "description": "Human-readable name for the color"
+    },
+    "colorType": {
+      "type": "string",
+      "enum": [
+        "Undefined",
+        "White",
+        "Off-white",
+        "Earth",
+        "Yellow",
+        "Orange",
+        "Red",
+        "Green",
+        "Blue",
+        "Purple",
+        "Brown",
+        "Grey",
+        "Black"
+      ],
+      "description": "Type of color, determining valid code ranges"
+    },
+    "colorCode": {
+      "type": "string",
+      "pattern": "^\\d{3}$",
+      "description": "Three-digit color code",
+      "allOf": [
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Undefined" } }
+          },
+          "then": {
+            "pattern": "^000$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "White" } }
+          },
+          "then": {
+            "pattern": "^001$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Off-white" } }
+          },
+          "then": {
+            "pattern": "^00[2-9]$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Earth" } }
+          },
+          "then": {
+            "pattern": "^1[0-9]{2}$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Yellow" } }
+          },
+          "then": {
+            "pattern": "^2[0-9]{2}$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Orange" } }
+          },
+          "then": {
+            "pattern": "^3[0-9]{2}$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Red" } }
+          },
+          "then": {
+            "pattern": "^4[0-9]{2}$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Green" } }
+          },
+          "then": {
+            "pattern": "^5[0-9]{2}$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Blue" } }
+          },
+          "then": {
+            "pattern": "^6[0-9]{2}$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Purple" } }
+          },
+          "then": {
+            "pattern": "^7[0-9]{2}$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Brown" } }
+          },
+          "then": {
+            "pattern": "^8[0-9]{2}$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Grey" } }
+          },
+          "then": {
+            "pattern": "^9[0-9][0-8]$"
+          }
+        },
+        {
+          "if": {
+            "properties": { "colorType": { "const": "Black" } }
+          },
+          "then": {
+            "pattern": "^999$"
+          }
+        }
+      ]
+    },
+    "references": {
+      "type": "object",
+      "required": ["colorSpaces"],
+      "properties": {
+        "colorSpaces": {
+          "type": "object",
+          "description": "At least one basic color space (RGB or HEX) must be provided",
+          "anyOf": [
+            { "required": ["rgb"] },
+            { "required": ["hex"] }
+          ],
+          "properties": {
+            "rgb": {
+              "type": "object",
+              "required": ["r", "g", "b"],
+              "properties": {
+                "r": {
+                  "name": "Red",
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255
+                },
+                "g": {
+                  "name": "Green",
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255
+                },
+                "b": {
+                  "name": "Blue",
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255
+                }
+              }
+            },
+            "hex": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "cmyk": {
+              "type": "array",
+              "description": "Array of CMYK colors with different profiles",
+              "items": {
+                "type": "object",
+                "required": ["profile", "values"],
+                "properties": {
+                  "profile": {
+                    "type": "string",
+                    "description": "Name/identifier of the CMYK profile"
+                  },
+                  "values": {
+                    "type": "object",
+                    "required": ["c", "m", "y", "k"],
+                    "properties": {
+                      "c": {
+                        "name": "Cyan",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      "m": {
+                        "name": "Magenta",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      "y": {
+                        "name": "Yellow",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      "k": {
+                        "name": "Black",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "standards": {
+          "type": "array",
+          "description": "Optional array of standard color references (0 or more)",
+          "default": [],
+          "items": {
+            "type": "object",
+            "required": ["standardName", "colorName", "colorCode"],
+            "properties": {
+              "standardName": {
+                "type": "string",
+                "description": "Name of the color standard system"
+              },
+              "colorName": {
+                "type": "string",
+                "description": "Name of the color in the standard"
+              },
+              "colorCode": {
+                "type": "string",
+                "description": "Code of the color in the standard"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "description": "URL to the color standard reference"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
