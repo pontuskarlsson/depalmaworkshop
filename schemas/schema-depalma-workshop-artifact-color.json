@@ -185,7 +185,7 @@
         "Blue",
         "Purple",
         "Brown",
-        "Grey",
+        "Gray",
         "Black"
       ],
       "description": "Type of color, determining valid code ranges"
