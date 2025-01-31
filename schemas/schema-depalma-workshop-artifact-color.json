@@ -39,12 +39,17 @@
     "url": "https://creativecommons.org/licenses/by-sa/4.0/",
     "attributionText": "A community effort initiated by DePalma Workshop and licensed under CC BY-SA 4.0",
     "attributionUrl": "https://github.com/pontuskarlsson/depalmaworkshop",
+    "disclaimer": "Any external color standards or systems referenced in this artifact are used for identification purposes only. Such references are part of the technical specification and do not imply ownership, affiliation, or endorsement. All referenced standards and their associated codes remain the property of their respective owners.",
     "notes": "This schema represents a collaborative effort between DePalma Workshop and its community. While the schema itself is maintained by DePalma Workshop, the individual color artifacts are created and maintained by various contributors. Each color artifact includes its own attribution details. All contributions must be licensed under CC BY-SA 4.0 to ensure the knowledge remains open and accessible."
   },
 
   "type": "object",
 
   "required": [
+    "$id",
+    "attribution",
+    "version",
+    "license",
     "colorName",
     "colorType",
     "colorCode",
@@ -52,6 +57,116 @@
   ],
 
   "properties": {
+    "$id": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL pointing to the location of this color artifact in the repository"
+    },
+    "attribution": {
+      "type": "object",
+      "required": ["contributors", "originalSource"],
+      "properties": {
+        "contributors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["name", "role", "profile"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the contributor"
+              },
+              "role": {
+                "type": "string",
+                "enum": ["contributor", "maintainer", "reviewer"],
+                "description": "Role of the contributor in this artifact"
+              },
+              "profile": {
+                "type": "string",
+                "format": "uri",
+                "description": "URL to the contributor's profile"
+              }
+            }
+          }
+        },
+        "originalSource": {
+          "type": "object",
+          "required": ["name", "profile"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the original source organization"
+            },
+            "profile": {
+              "type": "string",
+              "format": "uri",
+              "description": "URL to the organization's profile"
+            }
+          }
+        }
+      }
+    },
+    "version": {
+      "type": "object",
+      "required": ["artifactVersion", "lastUpdated", "status"],
+      "properties": {
+        "artifactVersion": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version of the artifact"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of last update"
+        },
+        "status": {
+          "type": "object",
+          "required": ["state", "details", "since"],
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": ["draft", "review", "approved", "deprecated"],
+              "description": "Current state of the artifact"
+            },
+            "details": {
+              "type": "string",
+              "description": "Details about the current version"
+            },
+            "since": {
+              "type": "string",
+              "format": "date",
+              "description": "Date since current status"
+            }
+          }
+        }
+      }
+    },
+    "license": {
+      "type": "object",
+      "required": ["name", "url", "attributionText", "disclaimer"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the license"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the license text"
+        },
+        "attributionText": {
+          "type": "string",
+          "description": "Text crediting the artifact creator and original source"
+        },
+        "disclaimer": {
+          "type": "string",
+          "description": "Standard disclaimer for external references",
+          "default": "Any external color standards or systems referenced in this artifact are used for identification purposes only. Such references are part of the technical specification and do not imply ownership, affiliation, or endorsement. All referenced standards and their associated codes remain the property of their respective owners."
+        }
+      }
+    },
     "colorName": {
       "type": "string",
       "description": "Human-readable name for the color"
